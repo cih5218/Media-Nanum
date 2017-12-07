@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanum.persistance.MemberDAO">
+
+	<!-- @ mapping -->
+	<!-- 이메일 중복 확인 -->
+	<select resultType="Integer" id="checkedEmail" parameterType="String">
+		SELECT count(member_email) FROM member
+		WHERE member_email=#{email}
+	</select>
+
+	<!-- 페이스북 로그인시 -->
+	<update id="fblogin" parameterType="String">
+		UPDATE member
+		SET
+		member_lastdate=sysdate
+		WHERE member_email=#{email}
+	</update>
+
+	<!-- 페이스북가입시  -->
+	<insert id="fbsignup" parameterType="String">
+		insert into member(member_id, member_email, member_password,
+		member_signdate, member_lastdate, member_level)
+		VALUES (member_id_seq.nextval,#{param1},#{param2}, sysdate ,sysdate,'1')
+	</insert>
+
+	<!-- 페이스북 비밀번호 가져오기 -->
+	<select resultType="String" id="getfbpassword" parameterType="String">
+		SELECT member_password 
+		FROM member
+		WHERE member_email=#{email}
+	</select>
+	<!-- END mapping -->
+
+
+
+	<!-- @add mapping -->
+	<!-- 일반사용자 회원가입  이메일 인증 시 레벨권한 1로 업데이트-->
+	<update id="insert" parameterType="String">
+		<!-- insert into member
+		values(member_id_seq.nextval,#{param1},#{param2},sysdate,sysdate,1) -->
+		update member set member_level = 1 where member_email = #{param1} and member_password = #{param2}
+	</update>
+
+	<!-- 로그인 시 이메일, 비밀번호 체크 (비동기) -->
+	<select id="loginCheck" resultType="com.nanum.domain.Member">
+		select member_email,
+		member_password 
+		from member
+		where member_email = #{member_email}
+	</select>
+
+	<!-- 로그인시 접속일 업데이트 -->
+	<update id="lastDate">
+		update member set member_lastdate = sysdate
+		where
+		member_email=#{param1} and member_password=#{param2}
+	</update>
+
+	<!-- 로그인시 세션에 올릴 값들 -->
+	<select id="setloginsession" resultType="com.nanum.domain.Member"
+		parameterType="String">
+		select member_id, member_email, member_password,
+		member_signdate, member_lastdate, member_level
+		from member
+		where member_email = #{member_email}
+	</select>
+
+	<!-- END  mapping -->
+
+	<!-- 회원가입시 임시 비밀번호로 변경 -->
+	<update id="setMemberPwd">
+		update member 
+		set member_password = #{param1} 
+		where member_email = #{param2}
+	</update>
+
+	<!-- 이메일 찾기 -->
+	<select id="Id_search" resultType="String" parameterType="String">
+		SELECT
+		M.MEMBER_EMAIL 
+		FROM MEMBER M JOIN MEMBER_NN N ON M.MEMBER_ID =
+		N.MEMBER_ID WHERE N.MEMBER_NAME = #{param1} AND N.MEMBER_CELL =
+		#{param2}
+	</select>
+
+	<!-- 비밀번호 찾기에서 이메일이 맞는지 확인하기 -->
+	<select id="getMemberEmail" parameterType="String" resultType="String">
+		select m.member_email 
+		from member m join member_nn n on m.member_id =
+		n.member_id where n.member_name = #{param1} and m.member_email =
+		#{param2}
+	</select>
+	
+	<!-- 인덱스 글 목록 -->
+	<select id="getList" resultType="com.nanum.domain.BoardNN">
+		select * from board_nn where board_category = #{title} and board_level=1 order by board_date desc
+	</select>
+	
+	<!-- 위치정보 insert -->
+	<insert id="insert_location" parameterType="com.nanum.domain.Location">
+		insert into location(location_no, location_wedo, location_kyoungdo, location_name)
+		values(loc_no_seq.nextval, #{location_wedo}, #{location_kyoungdo}, #{location_name})
+	</insert>
+	
+	<!-- 위치정보 insert 된것 가져오기 -->
+	<select id="select_location_no" resultType="Integer">
+		select max(location_no) from location
+	</select>
+	
+	<!-- 회원번호 가져오기 -->
+	<select id="select_member_no" resultType="Integer">
+		select member_id from member where member_email=#{member_email}
+	</select>
+	
+	<!-- 등록 게시글 입력 -->
+	<insert id="board_write" parameterType="com.nanum.domain.BoardNN">
+		insert into board_nn(board_no, board_title, board_category, board_image_title, board_image_detail, board_movie_url, board_content, board_account, board_date, board_term, board_hit, member_id, board_level, location_no)
+		values(board_no_seq.nextval, #{board_title}, #{board_category}, #{board_image_title}, #{board_image_detail}, #{board_movie_url}, #{board_content}, #{board_account}, sysdate, #{board_term}, 0, #{member_id}, 1, #{location_no})
+	</insert>
+	
+	<!-- 평가 내역 입력 -->
+	<insert id="check_insert" parameterType="com.nanum.domain.Checked">
+		insert into check_eva(check_no, check_score, check_content, member_id)
+		values(checked_no_seq.nextval, #{checked_score}, #{check_content}, #{member_id})
+	</insert>
+	
+	<!--  -->
+	<select id="check_no_select" resultType="Integer">
+		select max(check_no) from check_eva
+	</select>
+	
+	<!-- 게시글 평가 내역 입력 -->
+	<insert id="check_board_insert" parameterType="com.nanum.domain.CheckBoard">
+		insert into check_board(check_no, board_no, check_date)
+		values(#{check_no}, #{board_no}, sysdate)
+	</insert>
+	
+	<!-- 등록 게시글 작성 회원 아이디 가져오기 -->
+	<select id="board_member_email" resultType="String" parameterType="Integer">
+		select m.member_email from member m join board_nn b on m.member_id=b.member_id where b.board_no=#{board_no}
+	</select>
+	
+	<!-- 게시글 평가 날짜 가져오기 -->
+	<select id="check_board_date" parameterType="com.nanum.domain.CheckBoard" resultType="String">
+		select to_char(check_date,'YYYY.DD.MM HH24:MI') from check_board where check_no=#{check_no} and board_no=#{board_no}
+	</select>
+	
+	<!-- 게시글 평가 내역 리스트 가져오기 -->
+	<select id="checkboard_list" resultType="com.nanum.domain.CheckBoard_List">
+		select cm.member_id, cm.member_email, cm.check_no, cm.check_score, cm.check_content, cm.check_date, mn.member_image from member_nn mn join
+(select m.member_id, m.member_email, c.check_no, c.check_score, c.check_content, c.check_date from member m join
+      (select ce.check_no, ce.check_score, ce.check_content, ce.member_id, cb.check_date from check_board cb join
+      check_eva ce on cb.check_no=ce.check_no where cb.board_no=#{board_no}) c on m.member_id=c.member_id order by c.check_no asc) cm on mn.member_id=cm.member_id
+	</select>
+	
+	<!-- 등록 게시글 입력한 회원 이메일 가져오기 -->
+	<select id="board_member_select" resultType="String">
+		select m.member_email from member m join board_nn b on m.member_id=b.member_id where b.board_no=#{board_no}
+	</select>
+
+	<!--인기 태그 받기  -->
+    <select id="getTag" resultType="String">
+      select tag_name 
+      from tag order by tag_hits desc
+    </select>
+   
+    <!--보드 리스트 카운트 받기  -->
+    <select id="getBoardCount" resultType="Integer">
+      select count(*) 
+      from board_nn 
+      where board_category = #{title} and board_level=1
+    </select>
+
+	<!-- 보드 리스트 받기 -->
+	<select id="pageBoardList" parameterType="hashmap" resultType="com.nanum.domain.BoardNN">
+		select v.*,m.MEMBER_EMAIL,m.MEMBER_IMAGE from 
+         (select a.*,ROWNUM r from 
+            (select * from board_view where board_category = #{title} and board_level=1) A) v 
+          join (select mm.MEMBER_EMAIL,nn.MEMBER_IMAGE,mm.MEMBER_ID from member_nn nn join member mm on nn.MEMBER_ID=mm.MEMBER_ID) m on v.member_id = m.member_id
+		where r >= #{start} and r &lt;= #{end} and board_level=1
+
+		<if test="categoryall == 'newest'">
+			order by board_date desc
+		</if>
+		<if test="categoryall == 'like'">
+			order by board_like desc
+		</if>
+		<if test="categoryall == 'lookup'">
+			order by board_hit desc
+		</if>
+		<if test="categoryall == 'review'">
+			order by board_recount desc
+		</if>
+		<if test="categoryall == 'street'">
+			order by board_hit desc
+		</if>
+	</select>
+	
+	<!-- 프로필 등록 -->
+	<insert id="nanum_checkok" parameterType="com.nanum.domain.MemberNN">
+		insert into member_nn(member_id, member_image, member_name, member_cell, member_age, member_category, member_about, location_no)
+		values(#{member_id}, #{member_image}, #{member_name}, #{member_cell}, #{member_age}, #{member_category}, #{member_about}, #{location_no})
+	</insert>
+	
+	<!-- 나눔인증 등록 -->
+	<insert id="nanum_bestok" parameterType="com.nanum.domain.NanumBest">
+		insert into nanum_best(member_id, best_image, best_about, best_title, best_date, best_status)
+		values(#{member_id}, #{best_image}, #{best_about}, #{best_title}, sysdate, 0)
+	</insert>
+	
+	<!-- 나눔대기 회원으로 권한 업데이트 -->
+	<update id="nanum_wait">
+		update member set member_level=2 where member_id=#{member_id}
+	</update>
+	
+
+	
+	<!-- 위치정보 가져오기 -->
+	<select id="select_location" resultType="com.nanum.domain.Location">
+		select * from location where location_no=#{location_no}
+	</select>
+	
+	
+	
+	
+
+	<!-- 회원가입 시 이메일 인증 전에 권한 0 주기 -->
+	<insert id="insertSignup" parameterType="String">
+		insert into member values(member_id_seq.nextval,#{param1},#{param2},sysdate,sysdate,0)
+	</insert>
+	
+	<!-- 도와주세요 게시글 가져오기  -->
+	<select id="getBoardRequest" parameterType="map" resultType="com.nanum.domain.BoardRequest">
+		select *
+		from board_request
+		 <if test="selectTitle == 'my'">
+			where member_id = #{user_id}
+		</if>  
+		<if test='selectTitle != "all" and selectTitle != "my"'>
+			where request_category = #{selectTitle} 
+		</if>
+		
+		order by request_date desc
+	</select>
+	
+	<!-- 진행중인 도와주세요 총 건수 가져오기 -->
+	<select id="getRequestResult" resultType="Integer">
+		select count(*) from board_request where request_term >= sysdate
+	</select>
+	
+	<!--완료된 도와주세요 총 건수 가져오기  -->
+	<select id="getSuccessRequestResult" resultType="Integer">
+		select count(*) from board_request where request_term &lt; sysdate
+	</select>
+	
+	<!-- 총 재능인 인원수 가져오기 -->
+	<select id="getMember_nn" resultType="Integer">
+		select count(*) from member_nn 
+	</select>
+	
+	<!-- 등록된 도와주세요 이름,사진 가져오기 -->
+	<select id="getMember_name" parameterType="map" resultType="com.nanum.domain.MemberNN">
+		select m.* from board_request r join member_nn m 
+		on r.member_id = m.member_id
+		<!-- <if test="title == 'my'">
+			board_request 
+		</if> sessoin 추가되면 수정요망-->
+		<!-- 단일 값 사용할때는 value를 이용하여 사용해야 한다. -->
+		 <if test='selectTitle != "all" and selectTitle != "my"'>
+			where r.request_category = #{selectTitle}
+		</if>
+		order by r.request_date desc
+	</select>
+	
+	<!-- 인덱스 페이지 후기 가져오기 -->
+	<select id="getChecked" resultType="com.nanum.domain.Checked">
+		select * from check_eva order by check_score desc
+	</select>
+	
+	<!--인덱스 페이지 후기 이름 가져오기  -->
+	<select id="getCheckedName" resultType="com.nanum.domain.MemberNN">
+		select m.* from member_nn m join check_eva c on m.member_id = c.member_id order by c.check_score desc
+	</select>
+	
+	<!-- 인덱스 페이지 후기 날짜 가져오기  -->
+	<select id="getCheckedDate" resultType="com.nanum.domain.CheckBoard">
+		select to_char(c.check_date,'YYYY-MM-DD') check_date, c.board_no from check_eva k join check_board c on k.check_no = c.check_no order by k.check_score desc
+	</select>
+	
+	<!-- 인덱스 페이지 후기 판매 제목 가져오기  -->
+	<select id="getCheckedMember" resultType="com.nanum.domain.BoardNN">
+		select b.* from board_nn b join (select c.board_no from check_eva k join check_board c on k.check_no = c.check_no order by k.check_score desc) c on c.board_no = b.board_no
+	</select>
+	
+	
+
+	
+	
+	
+	
+	
+	<!-- 나눔 인증 리스트 가져오기 -->
+	<select id="nanum_check_list" resultType="com.nanum.domain.Nanum_Check_List">
+		select nm.BEST_IMAGE, nm.BEST_ABOUT, nm.BEST_TITLE, nm.BEST_DATE, nm.member_image, m.member_email, m.member_id from member m join
+		(select nb.BEST_IMAGE, nb.BEST_ABOUT, nb.BEST_TITLE, to_char(nb.BEST_DATE,'YYYY-MM-DD') as BEST_DATE, mn.MEMBER_IMAGE, mn.MEMBER_ID, nb.best_status from nanum_best nb join
+		member_nn mn on nb.MEMBER_ID = mn.MEMBER_ID where nb.best_status=0) nm on m.member_id = nm.member_id order by nm.best_date desc
+	</select>
+	
+	<!-- 나눔 인증 평가 입력 -->
+	<insert id="nanum_check_insert" parameterType="com.nanum.domain.NanumCheck">
+		insert into nanum_check (member_id, check_no, check_date)
+		values (#{member_id}, #{checked_no}, sysdate)
+	</insert>
+	
+	<!-- 회원 정보 가져오기 -->
+	<select id="select_member" resultType="com.nanum.domain.Member">
+		select * from member where member_id=#{member_id}
+	</select>
+	
+	<!-- 게시글 count 가져오기 -->
+	<select id="count_boardnn" resultType="Integer">
+		select count(*) from board_nn where member_id=#{member_id}
+	</select>
+	
+	<!-- 등록 게시글 업데이트 -->
+	<update id="boardnn_update" parameterType="com.nanum.domain.BoardNN">
+		update board_nn set board_title=#{board_title}, board_category=#{board_category}, board_image_title=#{board_image_title}, board_image_detail=#{board_image_detail}, board_movie_url=#{board_movie_url}, board_content=#{board_content}, board_account=#{board_account}, board_term=#{board_term}
+		where board_no=#{board_no}
+	</update>
+	
+	<!-- 회원가입시 이메일이 중복이면 새로운 비밀번호만 업데이트 -->
+	<update id="updateSignup" parameterType="String">
+		update member set member_password = #{param2} where member_email = #{param1}
+	</update> 
+
+	<!-- 회원가입시 이메일 권한 체크   -->
+	<select id="checkedEmailLevel" resultType="Integer">
+		select count(member_level) from member where member_email=#{email}
+	</select>
+	
+	<!-- 회원가입 시 이메일 권한 번호 체크  -->
+	<select id="getEmailLevel" resultType="Integer">
+		select member_level from member where member_email = #{email}
+	</select>
+	
+	
+	
+	<!-- 페이징 처리를 위한 검색 게시물수   -->
+	<select id="getSearchResultCount" parameterType="map" resultType="Integer">
+		select count(*) from (select b.board_no
+		from TAGINFO t join board_nn b
+		on t.board_no=b.board_no
+		where tag_name like '%${search}%'
+		union
+		select board_no
+		from board_nn
+		where board_title like '%${search}%' and board_level=1) 		
+	</select>
+	
+	<!-- 검색 결과 리스트  -->
+	<select id="SearchpageBoardList" parameterType="hashmap" resultType="com.nanum.domain.BoardNN">
+		select v.*,m.MEMBER_EMAIL,m.MEMBER_IMAGE from 
+         (select a.*,ROWNUM r from 
+            (select DISTINCT b.*
+             from TAGINFO t join board_view b
+             on t.board_no=b.board_no
+             where tag_name like '%${search}%'
+             union
+             select *
+             from board_view
+             where board_title like '%${search}%') A) v 
+          join (select mm.MEMBER_EMAIL,nn.MEMBER_IMAGE,mm.MEMBER_ID from member_nn nn join member mm on nn.MEMBER_ID=mm.MEMBER_ID) m on v.member_id = m.member_id
+				 where r >= #{start} and r &lt;= #{end} and board_level=1
+		
+		<if test="categoryall == 'newest'">
+			order by board_date desc
+		</if>
+		<if test="categoryall == 'like'">
+			order by board_like desc
+		</if>
+		<if test="categoryall == 'lookup'">
+			order by board_hit desc
+		</if>
+		<if test="categoryall == 'review'">
+			order by board_recount desc
+		</if>
+		<if test="categoryall == 'street'">
+			order by board_hit desc
+		</if>
+	
+	</select>
+	
+	<!-- 나눔인증 점수 합계, 개수 가져오기 -->
+	<select id="count_nanum_best" resultType="com.nanum.domain.CountScore">
+		select count(ce.check_no) as count, sum(ce.check_score) as sum from nanum_check nc join check_eva ce on nc.check_no=ce.check_no where nc.member_id=#{member_id}
+	</select>
+	
+	
+	<!-- 나눔인증 상태 업데이트 -->
+	<update id="nanum_best_update" parameterType="Integer">
+		update nanum_best set best_status=1 where member_id=#{member_id}
+	</update>
+	
+	<!-- 나눔 인증 정보 가져오기 -->
+	<select id="check_eva_list" resultType="com.nanum.domain.Nanum_member_check">
+		select nc.member_id as you_member_id, ce.member_id as me_member_id from nanum_check nc join check_eva ce on nc.CHECK_NO = ce.CHECK_NO
+	</select>
+	
+	<!-- 권한 업데이트 -->
+	<update id="update_nanumstatus" parameterType="Integer">
+		update member set member_level=3 where member_id=#{member_id}
+	</update>
+	
+</mapper>

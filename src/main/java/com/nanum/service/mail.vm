@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function fn_popup(objForm) { 
+	objForm.email.value = ${email}; 
+	objForm.password.value = ${password}; 
+	
+	window.open("http://192.168.43.111:8090/nanum/", "new"); 
+	
+	return true; 
+	} 
+</script>
+</head>
+<body>
+	<div style="background-color: #19D1D4; padding:50px 50px;">
+	<div style="text-align: center;">
+		<h2 style="color:#fff;">NANUM 에 오신 것을 환영합니다.</h2>
+		<h4 style="color:#fff;">NANUM 은 전문가뿐만 아니라 아마추어도 자기만의 재능을<br> 
+			나눌 수 있는 국내에 단 하나뿐인 사이트 입니다.</h4>
+	</div>
+	<br>
+	<div style="text-align: center;">
+		<form method="post" action="http://192.168.43.111:8090/nanum/signup_certification.nn" target="new" onsubmit="return fn_popup(this);"> 
+		<input type="hidden" name="email" id="email" value="${email}"/> 
+		<input type="hidden" name="password" id="password" value="${password}"/> 
+		<input style="color:#19D1D4;text-decoration:none; background:#fff; border-color: #5cc4c3; border-radius:5px; width:15%; padding:6px 12px; font-size:16px; text-align:center;" type="submit" value="회원 인증" /> 
+		</form>
+	</div>
+	<br>
+	<div style="text-align: center;">
+		<h4 style="color:#fff;">회원 인증을 통해 NANUM 의 </br>더 많은 기능을 누려보세요.</h4>
+	</div>
+	</div>
+</body>
+</html>

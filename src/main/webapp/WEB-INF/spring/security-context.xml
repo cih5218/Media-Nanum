@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/security 
+ http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+	<security:http use-expressions="true">
+		<security:csrf disabled="true" />
+		<security:form-login login-page="/login.nn"
+			authentication-failure-url="/index.nn"
+			authentication-success-handler-ref="loginSuccessHandler"
+			login-processing-url="/login/authenticate" />
+		<security:remember-me key="re-me-key"
+			remember-me-parameter="remember-me-param" remember-me-cookie="my-remember-me" />
+		<security:logout logout-url="/security/logout"
+			logout-success-url="/" invalidate-session="true" delete-cookies="my-remember-me" />   <!-- delete-cookies="true" -->
+		<security:access-denied-handler
+			error-page="/acessdenied.nn" />
+		<security:intercept-url pattern="/login.nn"
+			access="isAnonymous()" />
+		<security:intercept-url pattern="/signup*"
+			access="isAnonymous()" />
+		<security:intercept-url pattern="/forgot.nn"
+			access="isAnonymous()" />
+	</security:http>
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service
+				data-source-ref="driverManagerDataSource"
+				users-by-username-query="select member_email AS USERID, member_password AS PASSWORD, 1 enabled from member where member_email=?"
+				authorities-by-username-query="select m.member_email AS USERID, l.level_state AS ROLE_NAME
+	      									  								 from member m join member_level l on m.member_level = l.member_level
+	      									  								 where m.member_email=?" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+	<bean id="loginSuccessHandler" class="com.nanum.handler.LoginSuccessHandler">
+		<property name="sqlSession" ref="sqlSessionTemplate"></property>
+	</bean>
+</beans>
+
+
+
+
+
+
+

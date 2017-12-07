@@ -1,0 +1,183 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*==================================common====================================*/
+.b{border:1px solid #000000;}
+.b-f{border:1px solid #ffffff;}
+.color-o{color: #f3865b;}
+.color-m{color:#19d1d4;}
+.color-f{color:#fff;}
+.color-3{color:#333333;}
+.color-8{color:#888888; font-weight:400; vertical-align:middle; margin-top:3px;}
+.font-12{font-size:12px;}
+.font-13{font-size:13px;}
+.font-14{font-size:14px;}
+.width-13{width:13%;}
+.width-30{width:30%;}
+.width-40{width:40%;}
+.width-45{width:45%;}
+.width-50{width:50%;}
+.width-60{width:60%;}
+.width-70{width:70%;}
+.width-100{width:100%;}
+.margin-2{margin-top:2px;}
+.margin-5{margin-top:5px;}
+.margin-10{margin-top:10px;}
+.margin-15{margin-top:15px;}
+.margin-20{margin-top:20px;}
+.margin-30{margin-top:30px;}
+.margin-55{margin-top:55px;}
+.margin-70{margin-top:70px;}
+.margin-100{margin-top:100px;}
+.margin-0-auto{margin:0 auto;}
+
+.padding-10{padding:10px;}
+.padding-0-10{padding:0 10px; box-sizing:border-box;}
+.padding-50{padding-top:50px;}
+.padding-100{padding-top:100px;}
+.overflow-h{overflow:hidden;}
+
+.text-left{text-align:left;}
+.text-right{text-align:right;}
+.text-center{text-align:center;}
+.shadow-box{background: #fff; border-left: solid #e5e5e5 1px; border-right: solid #e5e5e5 1px; border-top: solid #e5e5e5 1px; box-shadow: 0 1px 2px #ccc;}
+.new-{padding:12px 0 14px 20px;}
+.btn-primary{color:#FFFFFF; line-height:1.2; background:#FF4B4E; cursor:pointer;}
+.btn{border-radius:5px; width:100%; padding:8px 12px; font-size:14px; opacity:0.8; box-sizing:border-box; text-align:center;}
+.btn-info{color: #fff; background-color: #6fcbca; border-color: #5cc4c3;}
+.btn-default{color: #333; background-color: #fff; border-color: #ccc;}
+.btn-block{display:block; width:100%;}
+.btn:hover{opacity:1;}
+.new-section{padding-bottom: 30px; margin-bottom: 30px; border-bottom: dotted #ccc 1px;}
+.new-body{padding:30px 15px;}
+.row{position:relative;}
+.rows{}
+.rows:after{content:""; display:block; clear:both;}
+.new-must{padding: 3px 5px; font-size: 11px; color: #f3865b; border: 1px solid #f3865b;}
+.new-select{padding: 3px 5px; font-size: 11px; color: #888; border: 1px solid #888;}
+.form-control{box-shadow: 0 1px 2px #ccc; border: 1px solid #ccc; transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s; width:100%; padding:6px 12px; max-width:100%; box-sizing:border-box;}
+		
+.float-left{float:left;}
+.float-right{float:right;}
+.float-none{float: none;}
+.border-round{border-radius:500px;}
+.border-box{box-sizing:border-box;}
+.margin-left-10{margin-left:10px;}
+.position-relative{position:relative;}
+.position-absolute{position:absolute;}
+	
+.display-none{display: none;}
+.inline-block{display:inline-block;}
+.block{display:block;}
+.page-min-height{min-height:550px;}
+.list-round{border-radius:500px; background:#F1F1F1; width:3px; height:3px; position:absolute; top:15px; left:2px;}		
+.new-pix-body{padding:15px; background-color: #fbfbfb;}	
+.sub-img{position:absolute; top:7px; right:7px;}
+.background-fff{background-color: #fff;}
+/*==================================common====================================*/
+
+
+/*=================================header=====================================*/
+header{width:100%; background-color:#18C0C1;}
+header li{list-style:none;}
+header.background-fff{width:100%; background-color:#fff;}
+header.background-list{width:100%; background-color:#fff; background-position:center; background-size:cover;}
+header.background-index{width:100%; background-color:#fff; background-position:center; background-size:cover; background-image:url(../images/index_main_bg.jpg); background-color:rgba(0,0,0,0.50);}
+/*기본 css 백그라운드 설정시 background-image:url(../images/login-bg.jpg); */
+.head-top{margin:0 auto; width:1024px; height:50px; position:relative;}
+.head-scroll-box{width:100%; background:#FFFFFF; position:fixed; top:0; z-index:100; margin-top:-60px; transition:all ease-out 0.3s; border-bottom: 2px solid #19D1D4; box-sizing:border-box;}
+.head-top-scroll{margin:0 auto; width:1024px; height:55px; position:relative;}
+	    
+		
+		
+.head-logo{height:100%; width:180px;}
+.head-logo img{height:30px; padding:7px;}
+        
+.head-search-box{position:relative;}
+.sub-img{position:absolute; top:7px; right:7px;}
+.head-search{width:230px; position:absolute; top:9px; left:135px;}
+		
+		
+.head-right{position:absolute; right:0; top:0;}
+.head-right.color-f>div>a{color:#FFFFFF;}
+.head-right>div{float:left; padding:14px; font-size:14px;}
+	
+/*로그인시 헤더*/	
+.header-icon-box{height: 10px;}
+.header-icon{box-sizing:border-box;}	
+.header-top-image>h5>a>img{width: 30px; height: 30px; margin-top: -3px; margin-left: -10px;}
+.header-top-image>h5{max-height: 20px;}
+.header-top-id{position: relative; top: -10px; left: 5px;}	
+.header-top-image:hover .header-top-menu{display: block;}
+
+	
+.header-top-menu{border: 1px solid rgba(0,0,0,.15); position: absolute; top: 100%; left:-10px;
+    z-index: 1000; margin-top: 13px; border-radius: 4px; box-shadow: 0 1px 2px #ccc; min-width: 130px; list-style: none; font-size: 13px; text-align: left; background: #fff; border-left: solid #e5e5e5 1px;
+    border-right: solid #e5e5e5 1px; border-top: none; border-bottom: none; padding-bottom: 5px; display: none;}
+.main-top-arrow{position:absolute; top: -5px; left: 10px;}
+.header-top-menu a{display: block; padding: 0; clear: both; font-weight: 400;}
+.header-top-menu a:hover{background: #eaeaea;}
+.header-user-menu{padding: 7px 15px;}	
+.header-user-line{padding: 5px; margin-top: 5px; border-top: 1px dotted #ccc;}
+	
+	
+/**/	
+.head-middle{min-height:430px;}
+		
+.head-bottom{background: #fff; border-top: solid #e5e5e5 1px; box-shadow: 0 1px 2px #ccc; width:100%;}
+.head-category{width:1024px; margin:0 auto;}
+.head-category ul:after{display:block; content:""; clear:both;}
+.head-category ul{padding-left:10px;}
+.head-category ul li{float:left;}
+.head-category ul li h5{padding: 7px 32px 7px 0; font-weight:400;}
+/*list-head*/
+.head-bottom-white{width:100%; margin-bottom:30px;}
+.head-category-white{width:1024px; margin:0 auto;}
+.head-category-white ul:after{display:block; content:""; clear:both;}
+.head-category-white ul{padding-left:10px;}
+.head-category-white ul li{float:left;}
+.head-category-white ul li h5{padding: 7px 32px 7px 0; font-weight:400; color:#FFFFFF;}
+.head-category-white ul li h5:hover{}
+/*================================footer=====================================*/
+
+footer{width:100%; height:240px; background: #19D1D4;}
+footer a{color:#FFFFFF;}
+.footer-box{width:1024px; margin:0 auto; position:relative; font-size:14px; color:#FFFFFF; font-weight:400;}
+			
+.footer-left{width:360px; padding-top:30px;}
+.footer-left>div{padding-top:10px;}
+			
+.footer-center{position:absolute; left:400px; top:95px;}
+.footer-center>div{padding-bottom:6px;}
+			
+.footer-right{position:absolute; left:800px; top:95px;}
+.footer-right>div{padding-bottom:6px;}
+
+
+/*================================chatting=====================================*/
+/*아이콘 버튼*/
+.chatting-icon{cursor:pointer; position: fixed; bottom: 25px; right: 25px; background: #19d1d4; border-radius:500px; width: 50px; height: 50px; border: 1px solid #c8eaeb; box-shadow: 0 6px 13px 0 rgba(0,0,0,.23);}
+.chatting-icon img{padding: 13px;}
+
+/*채팅 창*/
+.chatting-container{display:none; position:fixed; width: 368px; top: 0; right: 0; height: 100%; box-sizing:border-box; background: #fff; z-index: 100; overflow: hidden;}
+.chatting-div{position:absolute; bottom:182px; height:auto; min-width: 100%; overflow-y: scroll; background-color: #eee; box-sizing:border-box;}
+.chatting-div:after{content: ""; display: block; clear: both;}
+.chatting-input-box>div{position: fixed; bottom: 0; right: 0; max-width:364px; }
+.chatting-i-top{padding: 7px; background-color: #fff; border-bottom: solid #e5e5e5 1px;}
+.chatting-back, .chatting-x{padding-top: 3px; cursor: pointer;}
+.chatting-i-top img{width: 25px;}
+.chatting-i-top-room{font-size: 13px; padding-top: 1px; margin: 0 auto; text-align: center; width: 295px;}
+
+
+/*메시지 알람 숫자*/
+.message-alarm{display:none; position: absolute; color: #fff; background-color: #F3865B; width:20px; height:20px; border-radius:500px; top: 2px;; left: 25px;}
+.message-alarm>p{text-align: center; padding-top: 2px; font-size: 8px;}
+
+
+
+
+
+
+
+

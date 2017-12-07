@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanum.persistance.IndexDAO">
+
+	<!-- 장바구니 넣기 -->
+	<insert id="basketInsert">
+		insert into scrap(board_no , member_id, scrap_date)
+		values(${param1} , ${param2}, sysdate)
+	</insert>
+
+	<!-- 장바구니 가져오기 -->
+	<select id="basket_select" parameterType="Integer"
+		resultType="com.nanum.domain.BoardNN">
+		select * from BOARD_NN where board_no in (select board_no
+		from SCRAP where MEMBER_ID = #{member_id})
+	</select>
+
+	<!-- 장바구니 삭제 -->
+	<delete id="basket_delete">
+		delete from scrap where MEMBER_ID = #{param1} and
+		board_no = #{param2}
+	</delete>
+</mapper>

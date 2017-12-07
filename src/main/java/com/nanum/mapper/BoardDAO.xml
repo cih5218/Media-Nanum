@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanum.persistance.BoardDAO">
+
+
+	<!-- 등록 게시글 목록 가져오기 -->
+	<select id="board_member_list" resultType="com.nanum.domain.MemberNN">
+		select * from board_nn
+		b join member_nn m on b.member_id=m.member_id where
+		b.board_category=#{title} and board_level=1 order by board_date desc
+	</select>
+
+	<!-- 태그 목록 가져오기 -->
+	<select id="tag_select_list" resultType="com.nanum.domain.Tag">
+		select * from tag
+	</select>
+
+	<!-- 태그 입력 -->
+	<insert id="tag_insert">
+		insert into tag values(#{tag_name}, 0)
+	</insert>
+
+	<!-- 태그 정보 입력 -->
+	<insert id="taginfo_insert">
+		insert into taginfo values((select max(board_no) from board_nn),
+		#{tag_name})
+	</insert>
+
+	<!-- 게시판 별 태그 가져오기 -->
+	<select id="board_taginfo_list" resultType="com.nanum.domain.Tag">
+		select * from taginfo
+		where board_no=#{board_no}
+	</select>
+
+	<!-- -->
+	<select id="pageMemberList" parameterType="hashmap"
+		resultType="com.nanum.domain.MemberNN">
+		select *
+		from
+		(select A.* ,ROWNUM r from
+		(select * from board_view b join
+		member_nn m on
+		b.member_id=m.member_id where b.board_category=#{title}
+		and
+		board_level=1) A
+		)
+		where r >= #{start} and r &lt;= #{end}
+
+		<if test="categoryall == 'newest'">
+			order by board_date desc
+		</if>
+		<if test="categoryall == 'like'">
+			order by board_like desc
+		</if>
+		<if test="categoryall == 'lookup'">
+			order by board_hit desc
+		</if>
+		<if test="categoryall == 'review'">
+			order by board_recount desc
+		</if>
+		<if test="categoryall == 'street'">
+			order by board_hit desc
+		</if>
+	</select>
+
+	<!-- 태그 정보 삭제 -->
+	<delete id="taginfo_delete">
+		delete from taginfo where board_no=#{board_no}
+	</delete>
+
+
+	<!-- 등록 게시글 삭제(상태변경) -->
+	<update id="board_delete">
+		update board_nn set board_level=3 where
+		board_no=#{board_no}
+	</update>
+
+
+	<!-- 좋아요 등록 like_count_insert -->
+	<insert id="like_count_insert" parameterType="com.nanum.domain.BoardLike">
+		insert into
+		board_like(board_no,member_id)
+		values(#{board_no},#{member_id})
+	</insert>
+
+	<!-- 좋아요 삭제 like_count_delete -->
+	<delete id="like_count_delete" parameterType="com.nanum.domain.BoardLike">
+		delete from
+		board_like
+		where board_no=#{board_no} and member_id=#{member_id}
+	</delete>
+
+	<!-- 게시판의 좋아요 갯수 like_count_total(int board_no) -->
+	<select id="like_count_total" resultType="Integer">
+		select count(*) from
+		board_like
+		where board_no=#{board_no}
+
+	</select>
+
+	<!-- 개인이 한 좋아요 여부 확인해보자 -->
+	<select id="like_count_check" parameterType="com.nanum.domain.BoardLike"
+		resultType="Integer">
+		select count(*) from board_like
+		where member_id=#{member_id}
+		and board_no=#{board_no}
+	</select>
+
+	<!-- 등록 게시글 평가 확인 -->
+	<select id="board_check_eva" resultType="Integer" parameterType="Integer">
+		select count(*) from check_eva ce join (select c.check_no from
+		board_nn b join check_board c on b.board_no=c.board_no where
+		b.board_no=#{param1}) bc on ce.check_no=bc.check_no where
+		member_id=#{param2}
+	</select>
+
+	<!-- 등록 게시글 평가 답글 입력 -->
+	<insert id="checkre_insert" parameterType="com.nanum.domain.CheckRe">
+		insert into checkre
+		values(#{check_no}, #{checkre_content}, #{member_id})
+	</insert>
+
+	<!-- 등록 게시글 평가 답글 목록 -->
+	<select id="checkre_list" resultType="com.nanum.domain.CheckRe">
+		select c.check_no,
+		c.checkre_content, c.member_id from checkre c join
+		(select cb.BOARD_NO,
+		cb.CHECK_NO from check_board cb join check_eva ce
+		on
+		cb.CHECK_NO=ce.CHECK_NO where cb.board_no=#{board_no}) b on
+		c.check_no=b.check_no
+	</select>
+
+
+	<!-- 내가 산거 -->
+	<select id="nanum_list_sell" resultType="com.nanum.domain.Nanum_Connect_List">
+		select (select
+		member_email from member where member_id=s.receive_id) as
+		sms_email,b.board_title,b.board_image_title,b.board_account,s.SMS_DATE,b.board_no
+		from sms s join board_nn b
+		on s.board_no=b.BOARD_NO
+		where
+		s.send_id=#{param1}and s.board_no=#{param2} and s.SMS_LEVEL=#{param3}
+	</select>
+
+
+	<!-- 내가 나눠준거 나눔함 -->
+	<select id="nanum_list_buy" resultType="com.nanum.domain.Nanum_Connect_List">
+		select (select
+		member_email from member where member_id=s.send_id) as
+		sms_email,b.board_title,b.board_image_title,b.board_account,s.SMS_DATE,b.board_no
+		from sms s join board_nn b
+		on s.board_no=b.BOARD_NO
+		where
+		s.send_id=#{param1} and s.board_no=#{param2} and
+		s.SMS_LEVEL=#{param2}
+	</select>
+
+	<!-- send_id sms내역 가져오기 -->
+	<select id="nanum_list_getSendid" parameterType="Integer"
+		resultType="com.nanum.domain.SMS">
+		select *
+		from sms
+		where send_id=#{member_id}
+	</select>
+	<select id="nanum_list_getReceiveid" parameterType="Integer"
+		resultType="com.nanum.domain.SMS">
+		select *
+		from sms
+		where RECEIVE_ID=#{member_id}
+	</select>
+	<!-- 지역 검색 결과 카운트 가져오기 -->
+	<select id="getAreaSearchCount" resultType="Integer"
+		parameterType="map">
+		select count(b.board_no) from board_nn b join location c
+		on b.location_no =
+		c.location_no where c.location_name like
+		'%${cityName}%${gooName}%'
+		and board_level = 1 and board_category =
+		#{title}
+	</select>
+
+	<!-- 지역 검색 결과 리스트 가져오기 -->
+	<select id="getAreaSearchList" resultType="com.nanum.domain.BoardNN"
+		parameterType="map">
+		select v.*,m.MEMBER_EMAIL,m.MEMBER_IMAGE from
+		(select a.*,ROWNUM r from
+		(select b.* from board_view b join location c on b.location_no =
+		c.location_no where c.location_name like '%${cityName}%${gooName}%'
+		and board_level = 1 and board_category = #{title}) A) v
+		join (select
+		mm.MEMBER_EMAIL,nn.MEMBER_IMAGE,mm.MEMBER_ID from member_nn
+		nn join
+		member mm on nn.MEMBER_ID=mm.MEMBER_ID) m on v.member_id =
+		m.member_id
+		where r >= #{start} and r &lt;= #{end} and board_level=1
+		<if test="categoryall == 'newest'">
+			order by board_date desc
+		</if>
+		<if test="categoryall == 'like'">
+			order by board_like desc
+		</if>
+		<if test="categoryall == 'lookup'">
+			order by board_hit desc
+		</if>
+		<if test="categoryall == 'review'">
+			order by board_recount desc
+		</if>
+		<if test="categoryall == 'street'">
+			order by board_hit desc
+		</if>
+	</select>
+
+	<select id="overlap_exist" resultType="Integer">
+		select count(*) from sms
+		where board_no=#{param1} and send_id=#{param2}
+	</select>
+
+	<!-- 게시글 조회수 업데이트 -->
+	<update id="update_board_hit">
+		update board_nn set board_hit=#{board_hit}+1 where
+		board_no=#{board_no}
+	</update>
+
+	<!-- 비슷한 게시글 가져오기 -->
+	<select id="connect_board_list" resultType="com.nanum.domain.BoardNN">
+		select * from
+		board_nn where board_category = #{category} order by
+		board_date desc
+	</select>
+
+	<!-- 비슷한 게시글 올린 이 정보 가져오기 -->
+	<select id="connect_board_Member" resultType="com.nanum.domain.MemberNN">
+		select m.* from
+		member_nn m join board_nn b on m.member_id = b.member_id
+		where
+		b.board_category = #{category} order by b.board_date desc
+	</select>
+
+	<!-- 게시글 상세 보기 -->
+	<select id="board_detail" resultType="com.nanum.domain.BoardNN">
+		select * from board_nn
+		where board_no=#{board_no}
+	</select>
+
+</mapper>
+

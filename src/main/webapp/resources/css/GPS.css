@@ -1,0 +1,32 @@
+#map_canvas {
+	width: 522px;
+	height: 406px;
+}
+
+#listing {
+	float: left;
+	margin-left: 1px;
+	width: 205px;
+	height: 10px;
+	overflow: auto;
+	cursor: pointer;
+}
+
+#controls {
+	display: none;
+}
+
+.placeIcon {
+	width: 16px;
+	height: 16px;
+	margin: 2px;
+}
+
+#results {
+	border-collapse: collapse;
+	width: 184px;
+}
+
+#locationField {
+	margin-left: 1px;
+}

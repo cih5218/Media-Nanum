@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanum.persistance.MessageDAO">
+
+	<!-- 메시지 리스트 가져오기 -->
+	<select id="messageList" resultType="com.nanum.domain.Message">
+		select
+		message_no,substr(message_content,1,6) as
+		message_content,message_date,member_receiver,member_sender,message_confirm,receiver_state,sender_state,board_no
+		from message where message_no
+		in (select max(message_no) from message
+		where member_receiver =
+		#{member_id} group by member_sender) order by message_date desc
+	</select>
+
+	<!-- 메시지 리스트 이름 가져오기 -->
+	<select id="messageListName" resultType="com.nanum.domain.MemberNN">
+		select m.* from
+		member_nn m join (select max(message_no),member_sender,max(message_date) from message where member_receiver =
+		#{member_id} group by member_sender order by max(message_date) desc) r on m.member_id = r.member_sender
+	</select>
+
+	<!-- 메시지 정보 가져오기 -->
+	<select id="getMessageList" resultType="com.nanum.domain.Message"
+		parameterType="Integer">
+		select * from message where member_receiver = #{param1}
+		and member_sender = #{param2} order by message_date asc
+	</select>
+
+	<!-- 메시지 입력하기 (수신자 기준으로) -->
+	<insert id="messageInsert">
+		insert into message
+		values(message_no_seq.nextval,#{param1},sysdate,#{param3},#{param2},0,1,2,#{param4})
+	</insert>
+
+	<!-- 보낸 메시지 상대 이름 가져오기 -->
+	<select id="getSenderName" resultType="com.nanum.domain.MemberNN">
+		select * from member_nn
+		where member_id = #{sender_no}
+	</select>
+
+	<!-- 메시지 삭제하기 -->
+	<update id="messageDelete">
+		delete from message where member_receiver = #{param2}
+		and member_sender in (${param1})
+	</update>
+
+	<!-- 메시지 입력하기 (발신자 기준으로) -->
+	<insert id="messageInsertSuccess">
+		insert into message
+		values(message_no_seq.nextval,#{param1},sysdate,#{param2},#{param3},0,2,1,#{param4})
+	</insert>
+
+	<!-- 헤더 페이지 에서 메시지 알림 여부 확인 -->
+	<select id="messageCheck" resultType="Integer">
+		select count(*) from
+		message where member_receiver = #{member_id} and receiver_state = 2
+		and message_confirm = 0
+	</select>
+
+	<!-- 메시지 확인 시 메시지 체크 1로 업데이트 -->
+	<update id="messageCheckUpdate">
+		update message set message_confirm = 1 where
+		member_receiver = #{param1} and member_sender = #{param2}
+	</update>
+</mapper>
+

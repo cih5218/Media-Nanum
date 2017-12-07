@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanum.persistance.RequestBoardDAO">
+
+
+	<insert id="board_request_input" parameterType="com.nanum.domain.BoardRequest">
+		insert into
+		board_request(help_no,request_title,request_category,request_content,request_account,
+		request_date,request_term,member_id,board_level,location_no)
+		values(req_no_seq.nextval,#{request_title},#{request_category},#{request_content},#{request_account},
+		sysdate,to_date(#{request_term},'yyyymmdd'),#{member_id}, 1 ,0)
+	</insert>
+
+	<select id="board_request_data" parameterType="Integer"
+		resultType="com.nanum.domain.BoardRequest">
+		select *
+		from board_request
+		where help_no=#{board_id}
+	</select>
+
+	<!-- 요청수정 -->
+	<update id="board_request_update" parameterType="com.nanum.domain.BoardRequest">
+		update
+		board_request
+		set
+		request_title=#{request_title},
+		request_category=#{request_category},
+		request_content=#{request_content},
+		request_account=#{request_account},
+		request_term=to_date(#{request_term},'yy/mm/dd')
+		where
+		help_no=#{help_no}
+	</update>
+
+	<!-- 요청 삭제 -->
+	<delete id="board_request_delete" parameterType="com.nanum.domain.BoardRequest">
+		delete from
+		BOARD_REQUEST
+		where help_no=#{help_no}
+	</delete>
+
+</mapper>

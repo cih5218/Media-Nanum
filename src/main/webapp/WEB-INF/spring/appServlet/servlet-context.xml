@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+
+	<!-- Tiles -->
+	<!-- Update @Date : 2016. 6 .10 @Author : god YJ @Contents : InternalResourceViewResolver 
+		추가 및 Resolver 우선순위 설정 -->
+	<beans:bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<beans:property name="definitions">
+			<!-- Tiles 구성하는 xml 파일이 여러개 -->
+			<beans:list>
+				<beans:value>/WEB-INF/spring/Tiles.xml</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+
+	<beans:bean id="urlBasedViewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<beans:property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles2.TilesView" />
+		<beans:property name="order" value="1" />
+	</beans:bean>
+
+	<beans:bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="order" value="2" />
+		<beans:property name="contentType" value="text/html; charset=UTF-8" />
+	</beans:bean>
+
+	<!-- @Date : 2016. 6 .15 @Author : shin d @Contents :add json view -->
+	<beans:bean id="jsonView"
+		class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+		<beans:property name="contentType" value="text/html;charset=UTF-8" />
+	</beans:bean>
+
+	<!-- @Date : 2016. 6 .16 @Author : 신진우 @Contents : mail -->
+
+	<beans:bean class="com.nanum.persistance.EmailSender" />
+
+	<!--MailSender -->
+
+	<beans:bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<beans:property name="host" value="smtp.gmail.com" />
+		<beans:property name="port" value="587" />
+		<beans:property name="username" value="chaih5218@gmail.com" />
+		<beans:property name="password" value="rtwt128262!@" />
+		<beans:property name="javaMailProperties">
+			<beans:props>
+				<beans:prop key="mail.transport.protocol">smtp</beans:prop>
+				<beans:prop key="mail.smtp.auth">true</beans:prop>
+				<beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
+				<beans:prop key="mail.debug">true</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+
+	<!-- velocityEngine -->
+	<beans:bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<beans:property name="velocityProperties">
+			<beans:value>
+				resource.loader=class
+				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+			</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+	<context:component-scan base-package="com.nanum.controller" />
+	<security:global-method-security
+		secured-annotations="enabled" pre-post-annotations="disabled" />
+	<context:component-scan base-package="com.nanum.service" />
+	<beans:bean id="simpleChatHandler" class="com.nanum.handler.SocketHandler" />
+
+	<websocket:handlers>
+		<websocket:mapping path="/chat" handler="simpleChatHandler" />
+		<websocket:handshake-interceptors>
+			<beans:bean class="com.nanum.handler.HandshakeInterceptor" />
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+
+
+</beans:beans>

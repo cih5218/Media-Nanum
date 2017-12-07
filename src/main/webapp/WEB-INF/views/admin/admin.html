@@ -1,0 +1,473 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<title>NANUM 관리자 페이지</title>
+</head>
+<body>
+	<div class="admin-header">
+		<div class="row margin-0-auto">
+			<div class="admin-header-top">
+				<div class="inline-block width-50">
+					<div class="admin-logo">
+						<a href="admin.nn"><h1>Administrator</h1></a>
+					</div>
+				</div>
+				<div class="inline-blick width-50 float-right">
+					<ul class="admin-headder-top-nav">
+						<li><a href="index.nn">메인화면 이동</a></li>
+						<li>
+                        	<a href="security/logout">
+                        		<span class="color-o">로그아웃</span>
+                            </a>
+                        </li>
+					</ul>
+				</div>
+			</div>
+			<div class="admin-header-nav">
+				<ul>
+					<li class="active">
+						회원관리
+						<!--<ul>
+							<li><a href="#">회원관리</a></li>
+							<li><a href="#">회원메일발송</a></li>
+							<li><a href="#">접속자집계</a></li>
+						</ul>-->
+					</li>
+					<li>
+						게시판관리
+						<!--<ul>
+							<li><a href="#">게시판관리</a></li>
+							<li><a href="#">게시판그룹관리</a></li>
+							<li><a href="#">인기검색어관리</a></li>
+							<li><a href="#">인기검색어순위</a></li>
+							<li><a href="#">1:1문의</a></li>
+							<li><a href="#">내용관리</a></li>
+						</ul>-->
+					</li>
+                    <li>
+						인기검색어
+                    </li>
+					<li>
+						카테고리
+						<!--<ul>
+							<li><a href="#">기타</a></li>
+							<li><a href="#">기타</a></li>
+							<li><a href="#">기타</a></li>
+						</ul>-->
+					</li>
+					<li>
+						신고관리
+						<!--<ul>
+							<li><a href="#">문자보내기</a></li>
+							<li><a href="#">전송내역</a></li>
+						</ul>-->
+					</li>
+                    <li>
+						SMS 관리
+                    </li>
+				</ul>
+			</div>
+		</div>
+	</div>
+    
+
+
+	<div class="container-body">
+		<div class="container admin-container">
+        	
+            <!-- 회원관리 -->
+            <div class="admin-panel admin-container1">
+                <div class="row margin-30">
+                    <div class="admin-top">
+                        <h2>회원관리</h2>
+                        <div class="margin-15">
+                            총 회원수 <b class="color-o">0</b>&nbsp;명
+                        </div>
+                    </div>
+                    <table  class="margin-20">
+                        <tbody>
+                            <tr>
+                                <th>조회번호</th>
+                                <th>회원번호</th>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>나눔인증</th>
+                                <th>권한</th>
+                                <th>가입일</th>
+                                <th>최종 접속일</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>5555</td>
+                                <td>ohyes5654</td>
+                                <td>최태호</td>
+                                <td>인증완료</td>
+                                <td>
+                                    <select>
+                                        <option>대기회원</option>
+                                        <option>일반회원</option>
+                                        <option>재능대기</option>
+                                        <option selected>재능회원</option>
+                                        <option>블라인드</option>
+                                    </select>
+                                </td>
+                                <td>2016/06/25</td>
+                                <td>2016/06/25</td>
+                            </tr>
+                             <tr>
+                                <td>2</td>
+                                <td>5556</td>
+                                <td>ohyes155</td>
+                                <td>진우신</td>
+                                <td>인증완료</td>
+                                <td>
+                                    <select>
+                                        <option>대기회원</option>
+                                        <option>일반회원</option>
+                                        <option>재능대기</option>
+                                        <option selected>재능회원</option>
+                                        <option>블라인드</option>
+                                    </select>
+                                </td>
+                                <td>2016/06/25</td>
+                                <td>2016/06/25</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- 회원관리 -->
+            
+            <!-- 게시글 관리 -->
+            <div class="admin-panel admin-container2">
+                <div class="row margin-30">
+                    <div class="admin-top">
+                        <h2>게시글관리</h2>
+                        <div class="margin-15">
+                            총 건수 <b class="color-o">0</b>&nbsp;건
+                        </div>
+                    </div>
+                    <table  class="margin-20">
+                        <tbody>
+                            <tr>
+                                <th>조회번호</th>
+                                <th>게시글번호</th>
+                                <th>제목</th>
+                                <th>카테고리</th>
+                                <th>금액</th>
+                                <th>등록일</th>
+                                <th>등록기간</th>
+                                <th>조회수</th>
+                                <th>권한</th>
+                                <th>회원번호</th>
+                                <th>글 상태</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>21</td>
+                                <td>진우신짱</td>
+                                <td>컴퓨터</td>
+                                <td>500</td>
+                                <td>2016/06/25</td>
+                                <td>06/29? 5일?</td>
+                                <td>5</td>
+                                <td>
+                                    <select>
+                                        <option>정상</option>
+                                        <option selected>블라인드</option>
+                                        <option>삭제대기</option>
+                                    </select>
+                                </td>
+                                <td>500</td>
+                                <td>요청대기</td>
+                            </tr>
+                             <tr>
+                                <td>2</td>
+                                <td>23</td>
+                                <td>진우신짱</td>
+                                <td>컴퓨터</td>
+                                <td>500</td>
+                                <td>2016/06/23</td>
+                                <td>06/29? 5일?</td>
+                                <td>3</td>
+                                <td>
+                                    <select>
+                                        <option>정상</option>
+                                        <option selected>블라인드</option>
+                                        <option>삭제대기</option>
+                                    </select>
+                                </td>
+                                <td>500</td>
+                                <td>마감</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- 인기검색어관리 -->
+            
+            
+            <!-- 인기태그검색 -->
+            <div class="admin-panel admin-container3">
+                <div class="row margin-30">
+                    <div class="admin-top">
+                        <h2>인기태그검색</h2>
+                        <div class="margin-15">
+                            총 건수 <b class="color-o">0</b>&nbsp;건
+                        </div>
+                    </div>
+                    <table  class="margin-20">
+                        <tbody>
+                            <tr>
+                                <th>조회번호</th>
+                                <th>태그</th>
+                                <th>조회일</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>진우신짱</td>
+                                <td>2016/06/25</td>
+                            </tr>
+                             <tr>
+                                <td>2</td>
+                                <td>500</td>
+                                <td>2016/06/25</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- 인기태그검색 -->
+            
+            <!-- 카테고리별 나눔 -->
+            <div class="admin-panel admin-container4">
+                <div class="row margin-30">
+                    <div class="admin-top">
+                        <h2>카테고리별 나눔</h2>
+                        <div class="margin-15">
+                            총 건수 <b class="color-o">0</b>&nbsp;건
+                        </div>
+                    </div>
+                    <table  class="margin-20">
+                        <tbody>
+                            <tr>
+                                <th>조회번호</th>
+                                <th>카테고리</th>
+                                <th>오늘 나눔</th>
+                                <th>전체 나눔</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>뷰티</td>
+                                <td>9</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>스포츠/레져</td>
+                                <td>8</td>
+                                <td>20</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>미디어</td>
+                                <td>7</td>
+                                <td>30</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>예술/공예</td>
+                                <td>6</td>
+                                <td>40</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>패션</td>
+                                <td>5</td>
+                                <td>50</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>생활</td>
+                                <td>4</td>
+                                <td>60</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>컴퓨터</td>
+                                <td>3</td>
+                                <td>70</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>문서</td>
+                                <td>2</td>
+                                <td>80</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>기타</td>
+                                <td>1</td>
+                                <td>90</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- 인기검색어관리 -->
+            
+            <!-- 신고 관리 -->
+            <div class="admin-panel admin-container5">
+                <div class="row margin-30">
+                    <div class="admin-top">
+                        <h2>신고게시물 관리</h2>
+                        <div class="margin-15">
+                            총 신고수 <b class="color-o">0</b>&nbsp;건
+                        </div>
+                        <table  class="margin-20">
+                        <tbody>
+                            <tr>
+                                <th>조회번호</th>
+                                <th>카테고리</th>
+                                <th>신고자 번호</th>
+                                <th>신고자 아이디</th>
+                                <th>게시글번호</th>
+                                <th>게시글제목</th>
+                                <th>게시글권한</th>
+                                <th>신고내용</th>
+                                <th>신고날짜</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>뷰티</td>
+                                <td>21</td>
+                                <td>ohyes5654</td>
+                                <td>45</td>
+                                <td>진우신 팝니다</td>
+                                <td>
+                                    <select>
+                                        <option selected>정상</option>
+                                        <option>블라인드</option>
+                                        <option>삭제대기</option>
+                                    </select>
+                                </td>
+                                <td class="position-relative">
+                                    <span class="color-m admin-report-btn">상세보기</span>
+                                    <!--내용 들어갈 자리-->
+                                    <div class="admin-report-view color-o">fsadfasdfa</div>
+                                    <!--내용 들어갈 자리-->
+                                </td>
+                                <td>2016/06/26</td>
+                            </tr>
+                             <tr>
+                                <td>2</td>
+                                <td>뷰티</td>
+                                <td>21</td>
+                                <td>ohyes5654</td>
+                                <td>45</td>
+                                <td>진우신 팝니다</td>
+                                <td>
+                                    <select>
+                                        <option>정상</option>
+                                        <option>블라인드</option>
+                                        <option selected>삭제대기</option>
+                                    </select>
+                                </td>
+                                <td class="position-relative">
+                                    <span class="color-m admin-report-btn">상세보기</span>
+                                    <!--내용 들어갈 자리-->
+                                    <div class="admin-report-view color-o">fsadfasdfa</div>
+                                    <!--내용 들어갈 자리-->
+                                </td>
+                                <td>2016/06/26</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+            <!--  신고관리 -->
+            
+            
+            
+            
+            
+            
+            <!-- sms 전송내역 -->
+            <div class="admin-panel admin-container6">
+                <div class="row margin-30">
+                    <div class="admin-top">
+                        <h2>SMS 전송내역</h2>
+                        <div class="margin-15">
+                            총 건수 <b class="color-o">0</b>&nbsp;건
+                        </div>
+                    </div>
+                    <table  class="margin-20">
+                        <tbody>
+                            <tr>
+                                <th>조회번호</th>
+                                <th>판매자 아이디</th>
+                                <th>구매자 아이디</th>
+                                <th>글 번호</th>
+                                <th>날짜</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>jinwosin</td>
+                                <td>ohyes5654</td>
+                                <td>21</td>
+                                <td>2016/06/25</td>
+                            </tr>
+                             <tr>
+                                <td>2</td>
+                                <td>jinwosin</td>
+                                <td>ohyes5654</td>
+                                <td>25</td>
+                                <td>2016/06/25</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- sms 전송내역 -->
+            
+            
+		</div>
+	</div>
+</body>
+</html>
+
+
+<script>
+	$(function(){
+		
+  		$('.admin-panel').hide();
+		$('.admin-container1').show();//첫번째 탭 보임
+		$(".admin-report-btn").click(function(e) {
+            //$(this).siblings('div').css('display','block');
+        });
+		$('.admin-header-nav>ul>li').on('click',function(){
+			 index = $(this).index() + 1;
+			 $('.admin-header-nav>ul>li').removeClass('active')
+		     $('.admin-panel').hide();
+		     $('.admin-container'+ index).fadeIn();
+		     $(this).addClass('active');
+   		});
+	});
+		
+</script>
+
+
+
+
+
+
+
+
+
+

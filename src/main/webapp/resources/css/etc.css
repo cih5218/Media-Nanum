@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+
+/* report_write */
+.report-top{width: 100%; height: 400px; background-image: url(../images/photo-page01.jpg);
+    background-color: #888; background-repeat: no-repeat; background-size: cover;}
+.report-top h1{margin-top: 125px; line-height: 46px; text-shadow: 0 1px 10px #333;}
+.introduce-division{width: 40px; height: 3px; background-color: #19d1d4; margin-top: 15px;}
+.introduce-top-text{line-height: 21px; font-weight: 400;}
+.report-form-input>div:first-child{width: 16%; box-sizing:border-box;}
+.report-form-input>div:last-child{width: 84%; box-sizing:border-box;}
+.report-form-input:after{display: block; content: ""; clear: both;}
+.help-nanum{font-size: 13px;}
+/* report_write */
+
+
+/* 다른 사람 profile */
+
+
+
+
+/* 다른 사람 profile */
+
+
+/* nanum_check_list.jsp */
+.nanum-check-list-head{box-shadow: 0 1px 2px #ccc;}
+.nanum-check-inner-box:after{content: ""; display: block; clear: both;}
+.nanum-check-text{width:45%; padding-right:5%; float:left; overflow: hidden; height:0; line-height: 24px; margin-bottom: 10px; transition:all ease-out 0.3s;}
+.nanum-check-text>a{font-weight: 400; width: 70%;}
+.nanum-check-photo{width: 50%; overflow: hidden; margin-bottom: 10px; float: left; overflow: hidden; height: 0;}
+.nanum-check-photo img{width: 100%;}
+.nanum-check-photo>div{display: inline-block; float: left; width: 100%; box-sizing:border-box;}
+.nanum-check-inner-btn>button{background-color: inherit; cursor: pointer;}
+.nanum-check-list-input{padding-left: 10px; padding-top: 1px; padding-right: 140px;}
+.nanum-check-input-title{padding-top: 6px; font-size: 14px;}
+.nanum-check-list-star>ul{position:relative; width:18px; float: left; font-size: 18px; color: #eaeaea;}
+.nanum-check-list-star>ul>li{font-size: 18px; cursor: pointer;}
+.nanum-check-list-star>ul>li:nth-child(odd){width: 9px; overflow: hidden; position: absolute; top: 0; left: 0;}
+.nanum-check-list-star>ul>li:nth-child(even){overflow: hidden;}
+

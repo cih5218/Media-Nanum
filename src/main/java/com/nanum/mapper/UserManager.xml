@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nanum.persistance.UserManager">
+	
+	<select resultType="com.nanum.domain.Member" id="getUser" parameterType="String">
+		select * from member where MEMBER_EMAIL=#{member_email}
+	</select>
+	<select resultType="com.nanum.domain.MemberNN" id="getMemberNN">
+		select * from member_nn where MEMBER_id=#{member_id}
+	</select>
+	<select resultType="com.nanum.domain.Location" id="getLocation">
+		select * from location where location_no=#{location_no}
+	</select>
+	
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanum.persistance.ProfileDAO">
+	<!-- 상대 프로필 좋아요 총 횟수 -->
+	<select id="getLike" resultType="Integer">
+		select count(*)
+		from BOARD_view
+		where board_like in (select board_no from BOARD_NN where member_id =
+		#{member_id})
+	</select>
+
+	<!-- 상대 프로필 게시글 정보 가져오기 -->
+	<select id="getProfile" resultType="com.nanum.domain.BoardNN">
+		select * from board_nn where
+		member_id =#{member_id}
+	</select>
+
+	<!-- 상대 프로필 정보 가져오기 -->
+	<select id="getProfileMember" resultType="com.nanum.domain.MemberNN">
+		select * from member_nn
+		where member_id = #{member_id}
+	</select>
+
+	<!-- 프로필 가져오기 -->
+	<select id="select_membernn" resultType="com.nanum.domain.MemberNN">
+		select * from member_nn
+		where member_id=#{member_id}
+	</select>
+
+	<!-- 프로필 위치정보 업데이트 -->
+	<update id="location_update" parameterType="com.nanum.domain.Location">
+		update location set
+		location_wedo=#{location_wedo},
+		location_kyoungdo=#{location_kyoungdo}, location_name=#{location_name}
+		where location_no=#{location_no}
+	</update>
+
+	<!-- 프로필 정보 업데이트 -->
+	<update id="profile_update" parameterType="com.nanum.domain.MemberNN">
+		update member_nn set
+		member_image=#{member_image}, member_name=#{member_name},
+		member_cell=#{member_cell}, member_age=#{member_age},
+		member_category=#{member_category}, member_about=#{member_about}
+		where
+		member_id=#{member_id}
+	</update>
+
+</mapper>

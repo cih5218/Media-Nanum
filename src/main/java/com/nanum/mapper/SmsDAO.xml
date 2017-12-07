@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanum.persistance.SmsDAO">
+
+	<!-- 권한체크 -->
+	<select id="sms_level_check" parameterType="Integer"
+		resultType="com.nanum.domain.SMS">
+		select *
+		from SMS
+		where sms_no=#{sms_no}
+	</select>
+
+	<!-- 번호주기 누르면 업데이트 해야함 -->
+	<update id="sms_update" parameterType="Integer">
+		update sms
+		set
+		sms_level='1',
+		sms_date=sysdate
+		where sms_no=#{sms_no}
+	</update>
+
+
+	<!-- 폰번호 가져오기 public void sms_getphonenumber -->
+	<select id="sms_getphonenumber" parameterType="Integer"
+		resultType="String">
+		select m.member_cell
+		from board_nn b join member_nn m
+		on
+		b.MEMBER_ID = m.MEMBER_ID
+		where board_no=#{board_no}
+	</select>
+
+
+	<!-- 멤버 아이디로 폰번호 가져오기 -->
+	<select id="sms_givephonenumber" parameterType="Integer"
+		resultType="String">
+		select member_cell
+		from member_nn
+		where
+		member_id=#{member_id}
+	</select>
+
+	<!-- 문자 전송 버튼 눌러서 대기로 보내야한다. -->
+	<insert id="sms_insert" parameterType="com.nanum.domain.SMS">
+		insert into
+		sms(sms_no,sms_level,send_id,receive_id,board_no,sms_date_req)
+		values(sms_no_seq.nextval,#{sms_level},#{send_id},#{receive_id},#{board_no},sysdate)
+	</insert>
+
+	<!-- sms_receive_id 받는사람 아이디 가져와야함 -->
+	<select id="sms_receive_id" parameterType="Integer" resultType="Integer">
+		select member_id
+		from board_nn
+		where board_no=#{board_no}
+	</select>
+
+	<!-- sms sequnce가져와야함 -->
+	<select id="sms_no" parameterType="Integer" resultType="Integer">
+		select
+		max(sms_no)
+		from SMS
+		where board_no=#{board_no}
+	</select>
+
+</mapper>
+
+
+
+

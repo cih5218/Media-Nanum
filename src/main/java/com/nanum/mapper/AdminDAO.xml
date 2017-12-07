@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nanum.persistance.AdminDAO">
+
+	
+
+	<insert id="report_insert" parameterType="com.nanum.domain.Report">
+		insert into
+		report(report_no,report_category,report_member_no,report_date,report_content,board_no)
+		values(report_no_seq.nextval,#{report_category},#{report_member_no},sysdate,#{report_content},#{board_no})
+
+	</insert>
+
+	<!-- 신고할사람 이메일 ,아이디 가져오기 -->
+	<!-- 이메일 -->
+	<select id="report_user_email" parameterType="Integer"
+		resultType="com.nanum.domain.Member">
+		select m.member_email,m.member_id
+		from board_nn b join member m
+		on b.MEMBER_ID = m.MEMBER_ID
+		where board_no=#{board_no}
+	</select>
+
+	<!-- 카테고리 -->
+	<select id="report_user_category" parameterType="Integer"
+		resultType="String">
+		select b.BOARD_CATEGORY
+		from board_nn b join member m
+		on b.MEMBER_ID = m.MEMBER_ID
+		where board_no=#{board_no}
+	</select>
+	
+	<!-- 회원 정보 가져오기  -->
+	<select id="getMemberList" resultType="com.nanum.domain.AdminMemberList">
+		select m.member_id,substr(m.member_email,1,(instr(m.member_email,'@')-1)) as member_email,to_char(m.member_signdate,'yyyy/mm/dd') as member_signdate,
+		to_char(m.member_lastdate,'yyyy/mm/dd') as member_lastdate,n.member_name,m.member_level from member_nn n join member m 
+		on n.member_id = m.member_id order by member_id asc
+	</select>
+	
+	<!-- 게시글 리스트 가져오기  -->
+	<select id="getBoardList" resultType="com.nanum.domain.BoardNN">
+		select board_no,board_title,board_category,board_account,to_char(board_date,'yyyy/mm/dd') as board_date,
+		to_char(board_term,'yyyy/mm/dd') as board_term,board_hit,board_level,member_id from board_nn order by board_no asc	
+	</select>
+	
+	<!-- 인기 태그 리스트 가져오기 -->
+	<select id="getTagList" resultType="com.nanum.domain.Tag">
+		select * from tag order by tag_hits desc
+	</select>
+	
+	<!-- 카테고리 별 게시물 수 가져오기  -->
+	<select id="getCategoryList" resultType="com.nanum.domain.CategoryCount">
+		select board_category,(select count(*) from board_nn where board_date = sysdate) as category_count ,count(*) as all_category from board_nn group by board_category
+	</select>
+	
+	<!-- 게시글 신고 리스트 가져오기  -->
+	<select id="getReportList" resultType="com.nanum.domain.AdminReportList">
+		select r.report_category,r.report_member_no,substr(m.member_email,1,(instr(m.member_email,'@')-1)) as member_email,
+		r.board_no,b.board_title as board_title,b.board_level as board_level,r.report_content,to_char(r.report_date,'yyyy/mm/dd') as report_date from report r 
+		left outer join member m on (r.report_member_no = m.member_id) left outer join board_nn b on (r.board_no = b.board_no) order by r.report_no
+	</select>
+	
+	<!-- SMS 내역 리스트 가져오기  -->
+	<select id="getSmsListSend" resultType="com.nanum.domain.AdminSMS">
+		select substr(m.member_email,1,(instr(m.member_email,'@')-1)) as send_id,board_no,to_char(sms_date,'yyyy/mm/dd') as sms_date from sms s join member m on m.member_id = s.send_id order by sms_no asc
+	</select>
+	
+	<select id="getSmsListReceive" resultType="com.nanum.domain.AdminSMS">
+		select substr(m.member_email,1,(instr(m.member_email,'@')-1)) as receive_id from sms s join member m on m.member_id = s.receive_id order by sms_no asc
+	</select>
+</mapper>
